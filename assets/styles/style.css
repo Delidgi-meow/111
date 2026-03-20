@@ -1,0 +1,1086 @@
+/**
+ * Chronicle — Glassmorphism Style
+ * Стекло, розово-фиолетовая палитра, FA-иконки, адаптивность.
+ * Comfortaa для заголовков, системный шрифт для текста.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap');
+
+/* ============================================
+   CSS Variables — Dark Glass Theme
+   ============================================ */
+
+#chronicle_drawer,
+.chr-message-panel,
+.chr-modal,
+.chr-context-menu {
+    /* Primary — фуксия/розовый */
+    --chr-primary: #d946ef;
+    --chr-primary-light: #e879f9;
+    --chr-primary-dark: #a21caf;
+    --chr-primary-glow: rgba(217, 70, 239, 0.3);
+
+    /* Accent — нежный розовый */
+    --chr-accent: #f472b6;
+    --chr-accent-light: #f9a8d4;
+
+    /* Semantic */
+    --chr-success: #34d399;
+    --chr-warning: #fbbf24;
+    --chr-danger: #f87171;
+    --chr-info: #60a5fa;
+
+    /* Glass surfaces */
+    --chr-glass-bg: rgba(15, 8, 25, 0.65);
+    --chr-glass-bg-hover: rgba(25, 15, 40, 0.75);
+    --chr-glass-bg-card: rgba(20, 12, 35, 0.55);
+    --chr-glass-border: rgba(255, 255, 255, 0.08);
+    --chr-glass-border-hover: rgba(255, 255, 255, 0.14);
+    --chr-glass-blur: 16px;
+    --chr-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --chr-glass-shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.25);
+    --chr-glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    /* Text */
+    --chr-text: #f0e6f6;
+    --chr-text-muted: #a78bbc;
+    --chr-text-dim: #6b5580;
+
+    /* Radii */
+    --chr-radius: 12px;
+    --chr-radius-sm: 6px;
+    --chr-radius-pill: 50px;
+
+    /* Fonts */
+    --chr-font-display: 'Comfortaa', system-ui, sans-serif;
+    --chr-font-body: system-ui, -apple-system, sans-serif;
+
+    /* Transitions */
+    --chr-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --chr-transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Base Glass Mixin via Utility Classes
+   ============================================ */
+
+.chr-glass {
+    background: var(--chr-glass-bg);
+    backdrop-filter: blur(var(--chr-glass-blur));
+    -webkit-backdrop-filter: blur(var(--chr-glass-blur));
+    border: 1px solid var(--chr-glass-border);
+    box-shadow: var(--chr-glass-shadow), var(--chr-glass-inset);
+}
+
+.chr-glass-card {
+    background: var(--chr-glass-bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--chr-glass-border);
+    border-radius: var(--chr-radius);
+    box-shadow: var(--chr-glass-shadow-sm), var(--chr-glass-inset);
+    transition: border-color var(--chr-transition), box-shadow var(--chr-transition);
+}
+
+.chr-glass-card:hover {
+    border-color: var(--chr-glass-border-hover);
+    box-shadow: var(--chr-glass-shadow), var(--chr-glass-inset);
+}
+
+/* ============================================
+   Input Isolation (от тем ST)
+   ============================================ */
+
+#chronicle_drawer input:not([type="checkbox"]):not([type="radio"]),
+#chronicle_drawer textarea,
+#chronicle_drawer select,
+.chr-message-panel input:not([type="checkbox"]):not([type="radio"]),
+.chr-message-panel select,
+.chr-modal input:not([type="checkbox"]):not([type="radio"]),
+.chr-modal textarea,
+.chr-modal select {
+    background: var(--chr-glass-bg) !important;
+    color: var(--chr-text) !important;
+    border: 1px solid var(--chr-glass-border) !important;
+    border-radius: var(--chr-radius-sm) !important;
+    padding: 6px 10px !important;
+    font-family: var(--chr-font-body) !important;
+    font-size: 13px !important;
+    transition: border-color var(--chr-transition) !important;
+}
+
+#chronicle_drawer input:focus,
+#chronicle_drawer textarea:focus,
+#chronicle_drawer select:focus,
+.chr-modal input:focus,
+.chr-modal textarea:focus {
+    border-color: var(--chr-primary) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px var(--chr-primary-glow) !important;
+}
+
+/* Checkbox isolation */
+#chronicle_drawer input[type="checkbox"],
+.chr-message-panel input[type="checkbox"],
+.chr-modal input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background: var(--chr-glass-bg) !important;
+    background-image: none !important;
+    border: 2px solid var(--chr-glass-border) !important;
+    border-radius: 4px !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    transition: all var(--chr-transition) !important;
+}
+
+#chronicle_drawer input[type="checkbox"]:checked,
+.chr-message-panel input[type="checkbox"]:checked,
+.chr-modal input[type="checkbox"]:checked {
+    background: var(--chr-primary) !important;
+    border-color: var(--chr-primary) !important;
+}
+
+#chronicle_drawer input[type="checkbox"]:checked::after,
+.chr-message-panel input[type="checkbox"]:checked::after,
+.chr-modal input[type="checkbox"]:checked::after {
+    content: '✓' !important;
+    color: #fff !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+
+/* ============================================
+   Drawer — Main Panel
+   ============================================ */
+
+#chronicle_drawer .drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: linear-gradient(135deg,
+        rgba(169, 28, 175, 0.5),
+        rgba(217, 70, 239, 0.4),
+        rgba(244, 114, 182, 0.3)
+    );
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--chr-glass-border);
+}
+
+#chronicle_drawer .chr-title {
+    font-family: var(--chr-font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--chr-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#chronicle_drawer .chr-title i {
+    color: var(--chr-primary-light);
+    font-size: 16px;
+}
+
+#chronicle_drawer .chr-version {
+    font-family: var(--chr-font-display);
+    font-size: 10px;
+    color: var(--chr-text-muted);
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--chr-radius-pill);
+}
+
+/* ============================================
+   Tabs — Navigation
+   ============================================ */
+
+.chr-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--chr-glass-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.chr-tabs::-webkit-scrollbar { display: none; }
+
+.chr-tab {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: var(--chr-radius-sm);
+    background: transparent;
+    color: var(--chr-text-muted);
+    font-family: var(--chr-font-display);
+    font-size: 11px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all var(--chr-transition);
+    white-space: nowrap;
+    position: relative;
+}
+
+.chr-tab:hover {
+    color: var(--chr-text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.chr-tab.active {
+    color: var(--chr-primary-light);
+    background: rgba(217, 70, 239, 0.12);
+    font-weight: 600;
+}
+
+.chr-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: var(--chr-primary);
+    border-radius: 1px;
+}
+
+.chr-tab i {
+    font-size: 12px;
+}
+
+/* На мобильных — только иконки */
+@media (max-width: 600px) {
+    .chr-tab span { display: none; }
+    .chr-tab { padding: 8px 12px; }
+    .chr-tab i { font-size: 14px; }
+}
+
+/* ============================================
+   Tab Content Container
+   ============================================ */
+
+.chr-tab-contents {
+    padding: 12px;
+}
+
+.chr-tab-content {
+    display: none;
+}
+
+.chr-tab-content.active {
+    display: block;
+    animation: chrFadeIn 0.2s ease;
+}
+
+@keyframes chrFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   Section Cards
+   ============================================ */
+
+.chr-section {
+    margin-bottom: 12px;
+}
+
+.chr-section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-family: var(--chr-font-display);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--chr-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.chr-section-header i {
+    color: var(--chr-primary-light);
+    font-size: 13px;
+    width: 16px;
+    text-align: center;
+}
+
+.chr-section-body {
+    padding: 10px 12px;
+}
+
+/* ============================================
+   Sims Bars
+   ============================================ */
+
+.chr-sims-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.chr-sim-bar {
+    display: grid;
+    grid-template-columns: 20px 70px 1fr 36px;
+    align-items: center;
+    gap: 8px;
+}
+
+.chr-sim-bar__icon {
+    color: var(--chr-text-muted);
+    font-size: 13px;
+    text-align: center;
+}
+
+.chr-sim-bar__label {
+    font-family: var(--chr-font-display);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--chr-text-muted);
+}
+
+.chr-sim-bar__track {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--chr-radius-pill);
+    overflow: hidden;
+    position: relative;
+}
+
+.chr-sim-bar__fill {
+    height: 100%;
+    border-radius: var(--chr-radius-pill);
+    transition: width var(--chr-transition-slow), background-color var(--chr-transition);
+    position: relative;
+}
+
+/* Glow effect on low stats */
+.chr-sim-bar__fill.low {
+    box-shadow: 0 0 8px currentColor;
+    animation: chrPulse 2s ease-in-out infinite;
+}
+
+@keyframes chrPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.chr-sim-bar__value {
+    font-family: var(--chr-font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--chr-text);
+    text-align: right;
+    min-width: 30px;
+}
+
+.chr-sim-bar__reason {
+    grid-column: 3 / -1;
+    font-size: 10px;
+    color: var(--chr-text-dim);
+    font-style: italic;
+    padding-left: 2px;
+}
+
+/* ============================================
+   NPC Cards
+   ============================================ */
+
+.chr-npc-card {
+    padding: 12px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.chr-npc-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.chr-npc-card__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--chr-primary-dark), var(--chr-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.chr-npc-card__name {
+    font-family: var(--chr-font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--chr-text);
+}
+
+.chr-npc-card__relation {
+    font-size: 11px;
+    color: var(--chr-accent);
+}
+
+.chr-npc-card__birthday {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--chr-text-dim);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chr-npc-card__birthday i {
+    color: var(--chr-accent-light);
+}
+
+.chr-npc-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+/* ============================================
+   Tags / Pills
+   ============================================ */
+
+.chr-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--chr-radius-pill);
+    font-size: 10px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--chr-text-muted);
+    border: 1px solid transparent;
+}
+
+.chr-tag--primary {
+    background: rgba(217, 70, 239, 0.15);
+    color: var(--chr-primary-light);
+    border-color: rgba(217, 70, 239, 0.2);
+}
+
+.chr-tag--accent {
+    background: rgba(244, 114, 182, 0.15);
+    color: var(--chr-accent-light);
+}
+
+.chr-tag--success {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--chr-success);
+}
+
+.chr-tag--danger {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--chr-danger);
+}
+
+.chr-tag--warning {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--chr-warning);
+}
+
+.chr-tag--info {
+    background: rgba(96, 165, 250, 0.15);
+    color: var(--chr-info);
+}
+
+/* ============================================
+   Timeline Items
+   ============================================ */
+
+.chr-timeline-item {
+    position: relative;
+    padding: 10px 12px 10px 28px;
+    margin-bottom: 4px;
+    border-radius: var(--chr-radius-sm);
+    background: var(--chr-glass-bg-card);
+    border: 1px solid var(--chr-glass-border);
+    transition: all var(--chr-transition);
+}
+
+.chr-timeline-item:hover {
+    border-color: var(--chr-glass-border-hover);
+}
+
+/* Timeline dot */
+.chr-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chr-text-dim);
+}
+
+.chr-timeline-item[data-level="важное"]::before {
+    background: var(--chr-warning);
+    box-shadow: 0 0 6px var(--chr-warning);
+}
+
+.chr-timeline-item[data-level="ключевое"]::before {
+    background: var(--chr-danger);
+    box-shadow: 0 0 8px var(--chr-danger);
+}
+
+.chr-timeline-item__time {
+    font-size: 10px;
+    color: var(--chr-text-dim);
+    margin-bottom: 2px;
+}
+
+.chr-timeline-item__text {
+    font-size: 13px;
+    color: var(--chr-text);
+    line-height: 1.4;
+}
+
+/* ============================================
+   Wallet
+   ============================================ */
+
+.chr-wallet-balance {
+    text-align: center;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.chr-wallet-balance__amount {
+    font-family: var(--chr-font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--chr-text);
+    letter-spacing: -0.5px;
+}
+
+.chr-wallet-balance__currency {
+    color: var(--chr-text-muted);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.chr-wallet-balance__label {
+    font-size: 11px;
+    color: var(--chr-text-dim);
+    margin-top: 4px;
+}
+
+.chr-wallet-tx {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--chr-glass-border);
+}
+
+.chr-wallet-tx:last-child {
+    border-bottom: none;
+}
+
+.chr-wallet-tx__icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.chr-wallet-tx__icon.spend {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--chr-danger);
+}
+
+.chr-wallet-tx__icon.income {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--chr-success);
+}
+
+.chr-wallet-tx__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.chr-wallet-tx__category {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--chr-text);
+}
+
+.chr-wallet-tx__note {
+    font-size: 10px;
+    color: var(--chr-text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chr-wallet-tx__amount {
+    font-family: var(--chr-font-display);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.chr-wallet-tx__amount.spend { color: var(--chr-danger); }
+.chr-wallet-tx__amount.income { color: var(--chr-success); }
+
+/* ============================================
+   Calendar Grid
+   ============================================ */
+
+.chr-calendar {
+    user-select: none;
+}
+
+.chr-calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 4px;
+    margin-bottom: 8px;
+}
+
+.chr-calendar__month {
+    font-family: var(--chr-font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--chr-text);
+}
+
+.chr-calendar__nav {
+    display: flex;
+    gap: 4px;
+}
+
+.chr-calendar__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+}
+
+.chr-calendar__weekday {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--chr-text-dim);
+    padding: 4px 0;
+}
+
+.chr-calendar__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.chr-calendar__day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--chr-radius-sm);
+    font-size: 12px;
+    color: var(--chr-text-muted);
+    cursor: pointer;
+    transition: all var(--chr-transition);
+    position: relative;
+    min-height: 34px;
+}
+
+.chr-calendar__day:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.chr-calendar__day.today {
+    background: rgba(217, 70, 239, 0.2);
+    color: var(--chr-primary-light);
+    font-weight: 700;
+    border: 1px solid var(--chr-primary);
+}
+
+.chr-calendar__day.other-month {
+    color: var(--chr-text-dim);
+    opacity: 0.4;
+}
+
+.chr-calendar__day.has-events::after {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--chr-accent);
+    position: absolute;
+    bottom: 3px;
+}
+
+.chr-calendar__day.has-birthday::after {
+    background: var(--chr-warning);
+}
+
+/* ============================================
+   Location Map (SVG container)
+   ============================================ */
+
+.chr-location-map {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    border-radius: var(--chr-radius);
+    overflow: hidden;
+}
+
+.chr-location-map svg {
+    width: 100%;
+    height: 100%;
+}
+
+.chr-map-node {
+    cursor: grab;
+}
+
+.chr-map-node:active {
+    cursor: grabbing;
+}
+
+.chr-map-node rect {
+    fill: var(--chr-glass-bg-card);
+    stroke: var(--chr-glass-border);
+    stroke-width: 1;
+    rx: 8;
+    transition: all var(--chr-transition);
+}
+
+.chr-map-node:hover rect {
+    stroke: var(--chr-primary-light);
+    stroke-width: 1.5;
+}
+
+.chr-map-node.current rect {
+    stroke: var(--chr-primary);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 8px var(--chr-primary-glow));
+    animation: chrMapPulse 2s ease-in-out infinite;
+}
+
+@keyframes chrMapPulse {
+    0%, 100% { filter: drop-shadow(0 0 6px var(--chr-primary-glow)); }
+    50%      { filter: drop-shadow(0 0 14px var(--chr-primary-glow)); }
+}
+
+.chr-map-node text {
+    fill: var(--chr-text);
+    font-family: var(--chr-font-display);
+    font-size: 11px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+.chr-map-edge {
+    stroke: var(--chr-glass-border);
+    stroke-width: 1.5;
+    stroke-dasharray: 6, 4;
+    fill: none;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.chr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--chr-glass-border);
+    border-radius: var(--chr-radius-sm);
+    background: var(--chr-glass-bg);
+    color: var(--chr-text);
+    font-family: var(--chr-font-display);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--chr-transition);
+    backdrop-filter: blur(8px);
+}
+
+.chr-btn:hover {
+    border-color: var(--chr-glass-border-hover);
+    background: var(--chr-glass-bg-hover);
+}
+
+.chr-btn.primary {
+    background: linear-gradient(135deg, var(--chr-primary-dark), var(--chr-primary)) !important;
+    border-color: var(--chr-primary) !important;
+    color: #fff !important;
+}
+
+.chr-btn.primary:hover {
+    box-shadow: 0 0 16px var(--chr-primary-glow) !important;
+}
+
+.chr-btn.danger {
+    background: rgba(248, 113, 113, 0.15) !important;
+    border-color: rgba(248, 113, 113, 0.3) !important;
+    color: var(--chr-danger) !important;
+}
+
+.chr-icon-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--chr-glass-border);
+    border-radius: var(--chr-radius-sm);
+    background: transparent;
+    color: var(--chr-text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all var(--chr-transition);
+}
+
+.chr-icon-btn:hover {
+    color: var(--chr-text);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--chr-glass-border-hover);
+}
+
+/* ============================================
+   Message Panel (under each message)
+   ============================================ */
+
+.chr-message-panel {
+    margin-top: 8px;
+    border-radius: var(--chr-radius);
+    overflow: hidden;
+    color: var(--chr-text);
+}
+
+.chr-panel-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background var(--chr-transition);
+}
+
+.chr-panel-toggle:hover {
+    background: var(--chr-glass-bg-hover);
+}
+
+.chr-panel-icon {
+    color: var(--chr-primary-light);
+    font-size: 13px;
+    width: 18px;
+    text-align: center;
+}
+
+.chr-panel-summary {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--chr-text-muted);
+    overflow: hidden;
+}
+
+.chr-panel-summary span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chr-summary-divider {
+    color: var(--chr-text-dim);
+    flex-shrink: 0;
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+
+.chr-empty {
+    text-align: center;
+    padding: 24px 16px;
+    color: var(--chr-text-dim);
+    font-size: 12px;
+}
+
+.chr-empty i {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 8px;
+    opacity: 0.4;
+}
+
+/* ============================================
+   Diary Entries
+   ============================================ */
+
+.chr-diary-entry {
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-left: 2px solid var(--chr-primary-dark);
+}
+
+.chr-diary-entry__author {
+    font-family: var(--chr-font-display);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--chr-accent);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chr-diary-entry__text {
+    font-size: 12px;
+    color: var(--chr-text);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.chr-diary-entry__time {
+    font-size: 10px;
+    color: var(--chr-text-dim);
+    margin-top: 4px;
+}
+
+/* ============================================
+   Health indicators
+   ============================================ */
+
+.chr-injury-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+}
+
+.chr-injury-item__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.chr-injury-item__dot.light   { background: var(--chr-warning); }
+.chr-injury-item__dot.medium  { background: #f97316; }
+.chr-injury-item__dot.severe  { background: var(--chr-danger); }
+
+.chr-habit-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--chr-text-muted);
+}
+
+.chr-habit-item i {
+    color: var(--chr-warning);
+    font-size: 11px;
+    width: 14px;
+    text-align: center;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+
+#chronicle_drawer ::-webkit-scrollbar {
+    width: 4px;
+}
+
+#chronicle_drawer ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#chronicle_drawer ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+#chronicle_drawer ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   Modal (for calendar popups, etc.)
+   ============================================ */
+
+.chr-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: chrFadeIn 0.15s ease;
+}
+
+.chr-modal {
+    width: 90%;
+    max-width: 420px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: var(--chr-radius);
+    padding: 20px;
+    color: var(--chr-text);
+}
+
+.chr-modal__title {
+    font-family: var(--chr-font-display);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chr-modal__title i {
+    color: var(--chr-primary-light);
+}
+
+.chr-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+}

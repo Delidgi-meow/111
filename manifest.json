@@ -1,0 +1,12 @@
+{
+    "display_name": "Horae - Хроники Времени",
+    "loading_order": 100,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "assets/styles/style.css",
+    "author": "SenriYuki",
+    "version": "1.8.4",
+    "homePage": "",
+    "auto_update": false
+}

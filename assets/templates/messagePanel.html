@@ -1,0 +1,50 @@
+<!-- Chronicle — Панель под сообщением -->
+<div class="chr-message-panel chr-glass" data-message-id="{{messageId}}">
+    <div class="chr-panel-toggle">
+        <div class="chr-panel-icon">
+            <i class="fa-solid fa-book-journal-whills"></i>
+        </div>
+        <div class="chr-panel-summary">
+            <span class="chr-summary-time">{{time}}</span>
+            <span class="chr-summary-divider">·</span>
+            <span class="chr-summary-location">{{location}}</span>
+            <span class="chr-summary-divider">·</span>
+            <span class="chr-summary-event">{{eventSummary}}</span>
+        </div>
+        <div style="display:flex;gap:4px;">
+            <button class="chr-icon-btn chr-btn-edit" title="Редактировать">
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="chr-icon-btn chr-btn-expand" title="Развернуть">
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="chr-panel-content" style="display:none;padding:10px 12px;">
+        <!-- Мини-симс -->
+        <div style="display:flex;gap:12px;margin-bottom:8px;">
+            <div class="chr-tag" title="Голод"><i class="fa-solid fa-utensils"></i> {{hunger}}</div>
+            <div class="chr-tag" title="Гигиена"><i class="fa-solid fa-shower"></i> {{hygiene}}</div>
+            <div class="chr-tag" title="Сон"><i class="fa-solid fa-bed"></i> {{sleep}}</div>
+            <div class="chr-tag" title="Возбуждение"><i class="fa-solid fa-fire"></i> {{arousal}}</div>
+        </div>
+
+        <!-- Персонажи и наряды -->
+        <div class="chr-panel-row" style="margin-bottom:6px;">
+            <span style="font-size:10px;color:var(--chr-text-dim);">
+                <i class="fa-solid fa-users" style="width:14px;"></i> {{characters}}
+            </span>
+        </div>
+
+        <!-- Кнопки -->
+        <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="chr-btn chr-btn-save" style="flex:1;">
+                <i class="fa-solid fa-check"></i> Сохранить
+            </button>
+            <button class="chr-btn chr-btn-cancel">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+</div>

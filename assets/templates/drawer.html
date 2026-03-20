@@ -1,0 +1,453 @@
+<!-- Chronicle — Основная панель -->
+<div id="chronicle_drawer" class="drawer">
+    <div class="drawer-toggle">
+        <div id="chronicle_drawer_icon" class="drawer-icon fa-solid fa-book-journal-whills fa-fw closedIcon interactable" title="Chronicle — Хроники Мира" tabindex="0"></div>
+    </div>
+    <div id="chronicle_drawer_content" class="drawer-content closedDrawer">
+        <!-- Шапка -->
+        <div class="drawer-header">
+            <div class="chr-title">
+                <i class="fa-solid fa-book-journal-whills"></i>
+                Chronicle
+            </div>
+            <span class="chr-version">v0.1.0</span>
+        </div>
+
+        <!-- Навигация -->
+        <div class="chr-tabs">
+            <button class="chr-tab active" data-tab="status">
+                <i class="fa-solid fa-gauge"></i>
+                <span>Статус</span>
+            </button>
+            <button class="chr-tab" data-tab="sims">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>Симс</span>
+            </button>
+            <button class="chr-tab" data-tab="health">
+                <i class="fa-solid fa-kit-medical"></i>
+                <span>Здоровье</span>
+            </button>
+            <button class="chr-tab" data-tab="timeline">
+                <i class="fa-solid fa-timeline"></i>
+                <span>Таймлайн</span>
+            </button>
+            <button class="chr-tab" data-tab="characters">
+                <i class="fa-solid fa-users"></i>
+                <span>Персонажи</span>
+            </button>
+            <button class="chr-tab" data-tab="items">
+                <i class="fa-solid fa-box-open"></i>
+                <span>Предметы</span>
+            </button>
+            <button class="chr-tab" data-tab="map">
+                <i class="fa-solid fa-map"></i>
+                <span>Карта</span>
+            </button>
+            <button class="chr-tab" data-tab="calendar">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Календарь</span>
+            </button>
+            <button class="chr-tab" data-tab="settings">
+                <i class="fa-solid fa-gear"></i>
+                <span>Настройки</span>
+            </button>
+        </div>
+
+        <!-- Вкладки -->
+        <div class="chr-tab-contents">
+
+            <!-- ═══ СТАТУС ═══ -->
+            <div id="chr-tab-status" class="chr-tab-content active">
+                <!-- Время и погода -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header">
+                        <i class="fa-regular fa-clock"></i> Время и погода
+                    </div>
+                    <div class="chr-section-body" style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <div id="chr-current-date" style="font-family:var(--chr-font-display);font-size:16px;font-weight:700;color:var(--chr-text);">--/--</div>
+                            <div id="chr-current-weather" style="font-size:11px;color:var(--chr-text-muted);margin-top:2px;"></div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div id="chr-current-location" style="font-size:13px;color:var(--chr-primary-light);font-weight:600;">Не задано</div>
+                            <div id="chr-current-atmosphere" style="font-size:10px;color:var(--chr-text-dim);margin-top:2px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Мини-симс -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header">
+                        <i class="fa-solid fa-heart-pulse"></i> Состояние
+                    </div>
+                    <div class="chr-section-body">
+                        <div id="chr-mini-sims" class="chr-sims-grid">
+                            <div class="chr-sim-bar" data-stat="hunger">
+                                <i class="chr-sim-bar__icon fa-solid fa-utensils"></i>
+                                <span class="chr-sim-bar__label">Голод</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:70%;background-color:#f59e0b;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">70</span>
+                            </div>
+                            <div class="chr-sim-bar" data-stat="hygiene">
+                                <i class="chr-sim-bar__icon fa-solid fa-shower"></i>
+                                <span class="chr-sim-bar__label">Гигиена</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:70%;background-color:#60a5fa;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">70</span>
+                            </div>
+                            <div class="chr-sim-bar" data-stat="sleep">
+                                <i class="chr-sim-bar__icon fa-solid fa-bed"></i>
+                                <span class="chr-sim-bar__label">Сон</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:70%;background-color:#a78bfa;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">70</span>
+                            </div>
+                            <div class="chr-sim-bar" data-stat="arousal">
+                                <i class="chr-sim-bar__icon fa-solid fa-fire"></i>
+                                <span class="chr-sim-bar__label">Возбуждение</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:15%;background-color:#ec4899;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Быстрый обзор нарядов -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header">
+                        <i class="fa-solid fa-shirt"></i> Наряды
+                    </div>
+                    <div class="chr-section-body" id="chr-costumes-quick">
+                        <div class="chr-empty">Нет данных</div>
+                    </div>
+                </div>
+
+                <!-- Кнопка обновления -->
+                <div style="text-align:center;margin-top:8px;">
+                    <button id="chr-btn-refresh" class="chr-btn primary">
+                        <i class="fa-solid fa-rotate"></i> Обновить
+                    </button>
+                </div>
+            </div>
+
+            <!-- ═══ СИМС ═══ -->
+            <div id="chr-tab-sims" class="chr-tab-content">
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header">
+                        <i class="fa-solid fa-heart-pulse"></i> Состояние персонажа
+                    </div>
+                    <div class="chr-section-body">
+                        <div class="chr-sims-grid">
+                            <div class="chr-sim-bar" data-stat="hunger">
+                                <i class="chr-sim-bar__icon fa-solid fa-utensils"></i>
+                                <span class="chr-sim-bar__label">Голод</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:70%;background-color:#f59e0b;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">70</span>
+                                <span class="chr-sim-bar__reason"></span>
+                            </div>
+                            <div class="chr-sim-bar" data-stat="hygiene">
+                                <i class="chr-sim-bar__icon fa-solid fa-shower"></i>
+                                <span class="chr-sim-bar__label">Гигиена</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:70%;background-color:#60a5fa;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">70</span>
+                                <span class="chr-sim-bar__reason"></span>
+                            </div>
+                            <div class="chr-sim-bar" data-stat="sleep">
+                                <i class="chr-sim-bar__icon fa-solid fa-bed"></i>
+                                <span class="chr-sim-bar__label">Сон</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:70%;background-color:#a78bfa;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">70</span>
+                                <span class="chr-sim-bar__reason"></span>
+                            </div>
+                            <div class="chr-sim-bar" data-stat="arousal">
+                                <i class="chr-sim-bar__icon fa-solid fa-fire"></i>
+                                <span class="chr-sim-bar__label">Возбуждение</span>
+                                <div class="chr-sim-bar__track">
+                                    <div class="chr-sim-bar__fill" style="width:15%;background-color:#ec4899;"></div>
+                                </div>
+                                <span class="chr-sim-bar__value">15</span>
+                                <span class="chr-sim-bar__reason"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Пороговые эффекты -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Активные эффекты
+                    </div>
+                    <div class="chr-section-body" id="chr-sims-effects">
+                        <div class="chr-empty"><i class="fa-solid fa-check-circle"></i>Всё в норме</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ ЗДОРОВЬЕ ═══ -->
+            <div id="chr-tab-health" class="chr-tab-content">
+                <!-- HP -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-heart"></i> Здоровье</div>
+                    <div class="chr-section-body">
+                        <div class="chr-sim-bar">
+                            <i class="chr-sim-bar__icon fa-solid fa-heart" style="color:var(--chr-danger);"></i>
+                            <span class="chr-sim-bar__label">HP</span>
+                            <div class="chr-sim-bar__track">
+                                <div id="chr-hp-fill" class="chr-sim-bar__fill" style="width:100%;background:var(--chr-danger);"></div>
+                            </div>
+                            <span id="chr-hp-value" class="chr-sim-bar__value">100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Опьянение -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-wine-glass"></i> Опьянение</div>
+                    <div class="chr-section-body">
+                        <div class="chr-sim-bar">
+                            <i class="chr-sim-bar__icon fa-solid fa-wine-glass" style="color:var(--chr-accent);"></i>
+                            <span class="chr-sim-bar__label">Алкоголь</span>
+                            <div class="chr-sim-bar__track">
+                                <div id="chr-intox-fill" class="chr-sim-bar__fill" style="width:0%;background:var(--chr-accent);"></div>
+                            </div>
+                            <span id="chr-intox-value" class="chr-sim-bar__value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Травмы -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-bandage"></i> Травмы</div>
+                    <div class="chr-section-body" id="chr-injuries-list">
+                        <div class="chr-empty"><i class="fa-solid fa-heart-pulse"></i>Травм нет</div>
+                    </div>
+                </div>
+
+                <!-- Привычки -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-smoking"></i> Привычки</div>
+                    <div class="chr-section-body" id="chr-habits-list">
+                        <div class="chr-empty"><i class="fa-solid fa-leaf"></i>Нет привычек</div>
+                    </div>
+                </div>
+
+                <!-- Цикл -->
+                <div class="chr-section chr-glass-card" id="chr-cycle-display" style="display:none;">
+                    <div class="chr-section-header"><i class="fa-solid fa-moon"></i> Цикл</div>
+                    <div class="chr-section-body">
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <span id="chr-cycle-day" style="font-size:20px;font-weight:700;color:var(--chr-accent);font-family:var(--chr-font-display);">—</span>
+                            <div>
+                                <div id="chr-cycle-phase" style="font-size:12px;color:var(--chr-text);"></div>
+                                <div id="chr-cycle-symptoms" style="font-size:10px;color:var(--chr-text-muted);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ ТАЙМЛАЙН ═══ -->
+            <div id="chr-tab-timeline" class="chr-tab-content">
+                <div id="chr-timeline-list">
+                    <div class="chr-empty"><i class="fa-solid fa-timeline"></i>Событий нет</div>
+                </div>
+            </div>
+
+            <!-- ═══ ПЕРСОНАЖИ ═══ -->
+            <div id="chr-tab-characters" class="chr-tab-content">
+                <!-- Дневник -->
+                <div class="chr-section">
+                    <div class="chr-section-header"><i class="fa-solid fa-book"></i> Дневник</div>
+                    <div id="chr-diary-list">
+                        <div class="chr-empty"><i class="fa-solid fa-book"></i>Записей нет</div>
+                    </div>
+                </div>
+
+                <!-- NPC -->
+                <div class="chr-section">
+                    <div class="chr-section-header"><i class="fa-solid fa-users"></i> Персонажи</div>
+                    <div id="chr-characters-list">
+                        <div class="chr-empty"><i class="fa-solid fa-users"></i>Персонажей нет</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ ПРЕДМЕТЫ + КОШЕЛЁК ═══ -->
+            <div id="chr-tab-items" class="chr-tab-content">
+                <!-- Кошелёк -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-wallet-balance">
+                        <div>
+                            <span id="chr-wallet-amount" class="chr-wallet-balance__amount">0</span>
+                            <span id="chr-wallet-currency" class="chr-wallet-balance__currency">₽</span>
+                        </div>
+                        <div class="chr-wallet-balance__label">Баланс</div>
+                    </div>
+                    <div id="chr-wallet-transactions" style="max-height:200px;overflow-y:auto;">
+                    </div>
+                </div>
+
+                <!-- Инвентарь -->
+                <div class="chr-section">
+                    <div class="chr-section-header"><i class="fa-solid fa-box-open"></i> Инвентарь</div>
+                    <div id="chr-items-list">
+                        <div class="chr-empty"><i class="fa-solid fa-box-open"></i>Инвентарь пуст</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ КАРТА ═══ -->
+            <div id="chr-tab-map" class="chr-tab-content">
+                <div class="chr-section">
+                    <div class="chr-section-header">
+                        <i class="fa-solid fa-map"></i> Карта локаций
+                        <div style="margin-left:auto;display:flex;gap:4px;">
+                            <button class="chr-icon-btn" id="chr-map-add-room" title="Добавить комнату">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button class="chr-icon-btn" id="chr-map-add-link" title="Добавить связь">
+                                <i class="fa-solid fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chr-location-map chr-glass-card" id="chr-location-map">
+                        <svg id="chr-map-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Рёбра и ноды рендерятся динамически -->
+                        </svg>
+                        <div class="chr-empty" id="chr-map-empty">
+                            <i class="fa-solid fa-map"></i>
+                            Локаций нет. AI автоматически добавит комнаты,<br>
+                            или добавьте вручную через <i class="fa-solid fa-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ КАЛЕНДАРЬ ═══ -->
+            <div id="chr-tab-calendar" class="chr-tab-content">
+                <div class="chr-calendar chr-glass-card" style="padding:12px;">
+                    <div class="chr-calendar__header">
+                        <button class="chr-icon-btn" id="chr-cal-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                        <span class="chr-calendar__month" id="chr-cal-month">Март 2026</span>
+                        <button class="chr-icon-btn" id="chr-cal-next"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div class="chr-calendar__weekdays">
+                        <div class="chr-calendar__weekday">Пн</div>
+                        <div class="chr-calendar__weekday">Вт</div>
+                        <div class="chr-calendar__weekday">Ср</div>
+                        <div class="chr-calendar__weekday">Чт</div>
+                        <div class="chr-calendar__weekday">Пт</div>
+                        <div class="chr-calendar__weekday">Сб</div>
+                        <div class="chr-calendar__weekday">Вс</div>
+                    </div>
+                    <div class="chr-calendar__grid" id="chr-cal-grid">
+                        <!-- Дни рендерятся динамически -->
+                    </div>
+                </div>
+
+                <!-- Агенда -->
+                <div class="chr-section" style="margin-top:12px;">
+                    <div class="chr-section-header">
+                        <i class="fa-solid fa-list-check"></i> Задачи и планы
+                        <button class="chr-icon-btn" id="chr-agenda-add" style="margin-left:auto;" title="Добавить задачу">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="chr-agenda-list">
+                        <div class="chr-empty"><i class="fa-solid fa-list-check"></i>Нет задач</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ НАСТРОЙКИ ═══ -->
+            <div id="chr-tab-settings" class="chr-tab-content">
+                <!-- Модули -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-puzzle-piece"></i> Модули</div>
+                    <div class="chr-section-body" style="display:grid;gap:6px;">
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-sims" checked> Симс-система
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-health" checked> Здоровье + опьянение
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-cycle"> Цикл
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-wallet" checked> Кошелёк
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-diary" checked> Дневник
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-map" checked> Карта локаций
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                            <input type="checkbox" id="chr-set-calendar" checked> Календарь
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Промпты -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-terminal"></i> Промпты</div>
+                    <div class="chr-section-body">
+                        <label style="font-size:11px;color:var(--chr-text-muted);display:block;margin-bottom:4px;">
+                            Системный промпт (пусто = по умолчанию)
+                        </label>
+                        <textarea id="chr-set-system-prompt" rows="4" style="width:100%;resize:vertical;" placeholder="Оставьте пустым для промпта по умолчанию..."></textarea>
+                        <div style="margin-top:6px;display:flex;gap:6px;">
+                            <button class="chr-btn" id="chr-set-reset-prompt">
+                                <i class="fa-solid fa-rotate"></i> Сброс
+                            </button>
+                            <button class="chr-btn" id="chr-set-preview-prompt">
+                                <i class="fa-solid fa-eye"></i> Просмотр
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Внешний вид -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-palette"></i> Внешний вид</div>
+                    <div class="chr-section-body">
+                        <label style="font-size:11px;color:var(--chr-text-muted);display:block;margin-bottom:4px;">
+                            Пользовательский CSS
+                        </label>
+                        <textarea id="chr-set-custom-css" rows="3" style="width:100%;resize:vertical;font-family:monospace;font-size:11px;" placeholder=".chr-glass-card { border-radius: 16px; }"></textarea>
+                    </div>
+                </div>
+
+                <!-- Данные -->
+                <div class="chr-section chr-glass-card">
+                    <div class="chr-section-header"><i class="fa-solid fa-database"></i> Данные</div>
+                    <div class="chr-section-body" style="display:flex;flex-wrap:wrap;gap:6px;">
+                        <button class="chr-btn" id="chr-set-export">
+                            <i class="fa-solid fa-download"></i> Экспорт
+                        </button>
+                        <button class="chr-btn" id="chr-set-import">
+                            <i class="fa-solid fa-upload"></i> Импорт
+                        </button>
+                        <button class="chr-btn danger" id="chr-set-clear">
+                            <i class="fa-solid fa-trash"></i> Очистить
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
