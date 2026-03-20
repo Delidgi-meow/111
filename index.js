@@ -310,33 +310,13 @@ async function initDrawer() {
         return;
     }
 
-    const $icon = $('#chronicle_drawer_icon');
-    const $content = $('#chronicle_drawer_content');
-
-    $icon.on('click', function (e) {
-        e.stopPropagation(); // Не дать ST перехватить клик
-
-        const isClosing = !$icon.hasClass('closedIcon');
-
-        // Закрыть все остальные drawer-ы ST перед открытием
-        if (!isClosing) {
-            $('.drawer-icon').not($icon).addClass('closedIcon');
-            $('.drawer-content').not($content).addClass('closedDrawer').slideUp(200);
-        }
-
-        $icon.toggleClass('closedIcon');
-
-        if (isClosing) {
-            // Закрываем
-            $content.slideUp(200, () => $content.addClass('closedDrawer'));
-        } else {
-            // Открываем
-            $content.removeClass('closedDrawer').slideDown(200);
-        }
-    });
+    // НЕ вешаем свой обработчик клика!
+    // ST использует делегированные события на $(document) для .drawer-toggle/.drawer-icon,
+    // поэтому динамически вставленные drawer-ы работают автоматически.
+    // Horae делает точно так же — просто вставляет HTML и всё.
 
     syncSettingsUI();
-    console.log('[Chronicle] Drawer click handler bound');
+    console.log('[Chronicle] Drawer initialized (ST delegated handler)');
 }
 
 function initTabs() {

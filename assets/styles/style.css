@@ -10,7 +10,7 @@
    Drawer Safety — ensure toggle works
    ============================================ */
 
-/* Иконка drawer-а всегда видна и кликабельна */
+/* Иконка drawer-а — стилизация */
 #chronicle_drawer_icon {
     cursor: pointer !important;
     opacity: 1 !important;
@@ -29,10 +29,8 @@
     text-shadow: 0 0 8px rgba(217, 70, 239, 0.4);
 }
 
-/* ST closedDrawer = hidden */
-#chronicle_drawer_content.closedDrawer {
-    display: none !important;
-}
+/* НЕ ставим display:none !important — ST и jQuery сами управляют видимостью
+   через inline styles и класс closedDrawer */
 
 /* Когда открыт — glass фон */
 #chronicle_drawer_content {
