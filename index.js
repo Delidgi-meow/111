@@ -305,10 +305,38 @@ async function getTemplate(name) {
 
 async function initDrawer() {
     const $drawer = $('#chronicle_drawer');
-    if (!$drawer.length) return;
+    if (!$drawer.length) {
+        console.warn('[Chronicle] Drawer element not found in DOM');
+        return;
+    }
 
-    // Синхронизировать настройки → UI
+    const $icon = $('#chronicle_drawer_icon');
+    const $content = $('#chronicle_drawer_content');
+
+    $icon.on('click', function (e) {
+        e.stopPropagation(); // Не дать ST перехватить клик
+
+        const isClosing = !$icon.hasClass('closedIcon');
+
+        // Закрыть все остальные drawer-ы ST перед открытием
+        if (!isClosing) {
+            $('.drawer-icon').not($icon).addClass('closedIcon');
+            $('.drawer-content').not($content).addClass('closedDrawer').slideUp(200);
+        }
+
+        $icon.toggleClass('closedIcon');
+
+        if (isClosing) {
+            // Закрываем
+            $content.slideUp(200, () => $content.addClass('closedDrawer'));
+        } else {
+            // Открываем
+            $content.removeClass('closedDrawer').slideDown(200);
+        }
+    });
+
     syncSettingsUI();
+    console.log('[Chronicle] Drawer click handler bound');
 }
 
 function initTabs() {

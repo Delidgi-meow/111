@@ -7,6 +7,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap');
 
 /* ============================================
+   Drawer Safety — ensure toggle works
+   ============================================ */
+
+/* Иконка drawer-а всегда видна и кликабельна */
+#chronicle_drawer_icon {
+    cursor: pointer !important;
+    opacity: 1 !important;
+    font-size: 20px;
+    color: var(--chr-primary-light, #e879f9);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#chronicle_drawer_icon:hover {
+    color: var(--chr-primary, #d946ef);
+    transform: scale(1.1);
+}
+
+#chronicle_drawer_icon:not(.closedIcon) {
+    color: var(--chr-primary, #d946ef);
+    text-shadow: 0 0 8px rgba(217, 70, 239, 0.4);
+}
+
+/* ST closedDrawer = hidden */
+#chronicle_drawer_content.closedDrawer {
+    display: none !important;
+}
+
+/* Когда открыт — glass фон */
+#chronicle_drawer_content {
+    background: var(--chr-glass-bg, rgba(15, 8, 25, 0.65));
+    backdrop-filter: blur(var(--chr-glass-blur, 16px));
+    -webkit-backdrop-filter: blur(var(--chr-glass-blur, 16px));
+    border: 1px solid var(--chr-glass-border, rgba(255, 255, 255, 0.08));
+    box-shadow: var(--chr-glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.35));
+    border-radius: 0 0 var(--chr-radius, 12px) var(--chr-radius, 12px);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* ============================================
    CSS Variables — Dark Glass Theme
    ============================================ */
 
