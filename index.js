@@ -15,13 +15,21 @@ import { buildContextPrompt, getSystemPrompt, collectOOCPrompts } from './core/p
 import { simsEngine, STAT_CONFIG, STAT_KEYS } from './systems/sims.js';
 
 // ============================================
-// Константы
+// Константы (auto-detect folder from import.meta.url)
 // ============================================
 
 const EXT_NAME = 'chronicle';
-const EXT_FOLDER = 'third-party/SillyTavern-Chronicle';
-const TEMPLATE_PATH = `${EXT_FOLDER}/assets/templates`;
 const VERSION = '0.1.0';
+
+// Авто-определение пути расширения из URL текущего модуля
+// import.meta.url = "http://127.0.0.1:8000/scripts/extensions/third-party/FOLDER_NAME/index.js"
+// Нужно извлечь "third-party/FOLDER_NAME"
+const _scriptUrl = import.meta.url;
+const _extMatch = _scriptUrl.match(/\/scripts\/extensions\/(third-party\/[^/]+)\//);
+const EXT_FOLDER = _extMatch ? _extMatch[1] : 'third-party/SillyTavern-Chronicle';
+const TEMPLATE_PATH = `${EXT_FOLDER}/assets/templates`;
+
+console.log(`[Chronicle] Detected extension folder: ${EXT_FOLDER}`);
 
 // ============================================
 // Настройки по умолчанию
@@ -101,17 +109,29 @@ function saveSettings() {
 // ============================================
 
 function ensureRegexRules() {
-    const context = getContext();
-    if (!context.extensionSettings?.regex) return;
-
-    const existingIds = (context.extensionSettings.regex || []).map(r => r.id);
-    const rules = getRegexRules();
-
-    for (const rule of rules) {
-        if (!existingIds.includes(rule.id)) {
-            context.extensionSettings.regex.push(rule);
-            console.log(`[Chronicle] Regex rule added: ${rule.id}`);
+    try {
+        // ST хранит regex rules в разных местах в зависимости от версии
+        const context = getContext();
+        const regexScripts = extension_settings?.regex_extension?.scripts
+            || context?.extensionSettings?.regex
+            || null;
+        
+        if (!regexScripts || !Array.isArray(regexScripts)) {
+            console.log('[Chronicle] Regex system not found, skipping auto-rules. Add regex rules manually if needed.');
+            return;
         }
+        
+        const existingIds = regexScripts.map(r => r.id || r.scriptName);
+        const rules = getRegexRules();
+        
+        for (const rule of rules) {
+            if (!existingIds.includes(rule.id) && !existingIds.includes(rule.scriptName)) {
+                regexScripts.push(rule);
+                console.log(`[Chronicle] Regex rule added: ${rule.id}`);
+            }
+        }
+    } catch (err) {
+        console.warn('[Chronicle] Could not auto-inject regex rules:', err.message);
     }
 }
 
@@ -267,7 +287,20 @@ function onMessageEdited(messageIndex) {
 // ============================================
 
 async function getTemplate(name) {
-    return renderExtensionTemplateAsync(TEMPLATE_PATH, name);
+    try {
+        return await renderExtensionTemplateAsync(TEMPLATE_PATH, name);
+    } catch (err) {
+        console.warn(`[Chronicle] Template "${name}" via ST API failed, trying direct fetch...`, err.message);
+        try {
+            // Fallback: прямой fetch по определённому пути
+            const url = `/scripts/extensions/${TEMPLATE_PATH}/${name}.html`;
+            const resp = await fetch(url);
+            if (resp.ok) return await resp.text();
+        } catch (_) { /* ignore */ }
+        
+        console.error(`[Chronicle] Could not load template "${name}". Check that the extension folder contains assets/templates/${name}.html`);
+        return `<div id="chronicle_drawer" style="display:none;"><!-- template ${name} failed to load --></div>`;
+    }
 }
 
 async function initDrawer() {
@@ -540,30 +573,51 @@ function renderMessagePanel(messageIndex) {
 // ============================================
 
 jQuery(async () => {
-    console.log(`[Chronicle] Loading v${VERSION}...`);
+    console.log(`[Chronicle] Loading v${VERSION}... (folder: ${EXT_FOLDER})`);
 
-    loadSettings();
-    ensureRegexRules();
+    try {
+        loadSettings();
+        ensureRegexRules();
 
-    // Вставить drawer в DOM
-    $('#extensions-settings-button').after(await getTemplate('drawer'));
+        // Вставить drawer в DOM
+        const drawerHtml = await getTemplate('drawer');
+        if (drawerHtml) {
+            $('#extensions-settings-button').after(drawerHtml);
+            console.log('[Chronicle] Drawer template inserted');
+        }
 
-    await initDrawer();
-    initTabs();
+        await initDrawer();
+        initTabs();
 
-    stateManager.init(getContext(), settings);
+        stateManager.init(getContext(), settings);
 
-    // Подписаться на события ST
-    eventSource.on(event_types.CHARACTER_MESSAGE_RENDERED, onMessageReceived);
-    eventSource.on(event_types.CHAT_COMPLETION_PROMPT_READY, onPromptReady);
-    eventSource.on(event_types.CHAT_CHANGED, onChatChanged);
-    eventSource.on(event_types.MESSAGE_RENDERED, onMessageRendered);
-    eventSource.on(event_types.MESSAGE_DELETED, onMessageDeleted);
-    eventSource.on(event_types.MESSAGE_EDITED, onMessageEdited);
+        // Подписаться на события ST (с проверкой — не все event_types есть во всех версиях ST)
+        const safeOn = (eventName, eventType, handler) => {
+            if (eventType) {
+                eventSource.on(eventType, handler);
+            } else {
+                console.warn(`[Chronicle] Event "${eventName}" not available in this ST version, skipping`);
+            }
+        };
 
-    // Начальная загрузка
-    await onChatChanged();
+        safeOn('CHARACTER_MESSAGE_RENDERED', event_types.CHARACTER_MESSAGE_RENDERED, onMessageReceived);
+        safeOn('CHAT_COMPLETION_PROMPT_READY', event_types.CHAT_COMPLETION_PROMPT_READY, onPromptReady);
+        safeOn('CHAT_CHANGED', event_types.CHAT_CHANGED, onChatChanged);
+        safeOn('MESSAGE_RENDERED', event_types.MESSAGE_RENDERED, onMessageRendered);
+        safeOn('MESSAGE_DELETED', event_types.MESSAGE_DELETED, onMessageDeleted);
+        safeOn('MESSAGE_EDITED', event_types.MESSAGE_EDITED, onMessageEdited);
+        safeOn('MESSAGE_SWIPED', event_types.MESSAGE_SWIPED, () => {
+            if (!settings.enabled) return;
+            lastState = stateManager.aggregate();
+            refreshAllDisplays();
+        });
 
-    isInitialized = true;
-    console.log(`[Chronicle] v${VERSION} loaded!`);
+        // Начальная загрузка
+        await onChatChanged();
+
+        isInitialized = true;
+        console.log(`[Chronicle] v${VERSION} loaded! ✓`);
+    } catch (err) {
+        console.error(`[Chronicle] Initialization failed:`, err);
+    }
 });

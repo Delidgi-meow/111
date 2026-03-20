@@ -1,12 +1,12 @@
 {
-    "display_name": "Horae - Хроники Времени",
+    "display_name": "Chronicle — Хроники Мира",
     "loading_order": 100,
     "requires": [],
     "optional": [],
     "js": "index.js",
     "css": "assets/styles/style.css",
-    "author": "SenriYuki",
-    "version": "1.8.4",
+    "author": "kissa",
+    "version": "0.1.0",
     "homePage": "",
     "auto_update": false
 }
